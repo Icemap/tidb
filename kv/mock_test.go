@@ -56,7 +56,7 @@ func (s testMockSuite) TestInterface(c *C) {
 		_, err = transaction.IterReverse(Key("lock"))
 		c.Check(err, IsNil)
 	}
-	transaction.Commit(context.Background())
+	_ = transaction.Commit(context.Background())
 
 	transaction, err = storage.Begin()
 	c.Check(err, IsNil)

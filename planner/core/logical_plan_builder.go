@@ -917,7 +917,7 @@ func (b *PlanBuilder) coalesceCommonColumns(p *LogicalJoin, leftPlan, rightPlan 
 	p.SetSchema(expression.NewSchema(schemaCols...))
 	p.names = names
 	if joinTp == ast.RightJoin {
-		leftPlan, rightPlan = rightPlan, leftPlan
+		_, rightPlan = rightPlan, leftPlan
 	}
 	// We record the full `rightPlan.Schema` as `redundantSchema` in order to
 	// record the redundant column in `rightPlan` and the output columns order

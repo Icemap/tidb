@@ -541,12 +541,12 @@ func (rm *StandAloneRegionManager) allocIDs(n int) ([]uint64, error) {
 
 func (rm *StandAloneRegionManager) storeHeartBeatLoop() {
 	defer rm.wg.Done()
-	ticker := time.Tick(time.Second * 3)
+	ticker := time.NewTicker(time.Second * 3)
 	for {
 		select {
 		case <-rm.closeCh:
 			return
-		case <-ticker:
+		case <-ticker.C:
 		}
 		storeStats := new(pdpb.StoreStats)
 		storeStats.StoreId = rm.storeMeta.Id

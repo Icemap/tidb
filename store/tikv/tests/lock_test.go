@@ -484,8 +484,9 @@ func (s *testLockSuite) TestBatchResolveLocks(c *C) {
 	committer.PrewriteAllMutations(context.Background())
 	c.Assert(err, IsNil)
 
-	var locks []*tikv.Lock
-	for _, key := range []string{"k1", "k2", "k3", "k4"} {
+	lockArray := []string{"k1", "k2", "k3", "k4"}
+	locks := make([]*tikv.Lock, 0, len(lockArray))
+	for _, key := range lockArray {
 		l := s.mustGetLock(c, []byte(key))
 		locks = append(locks, l)
 	}

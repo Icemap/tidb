@@ -1674,7 +1674,7 @@ func (e *tableStorageStatsRetriever) setDataForTableStorageStats(ctx sessionctx.
 }
 
 func (e *memtableRetriever) setDataFromSessionVar(ctx sessionctx.Context) error {
-	var rows [][]types.Datum
+	rows := make([][]types.Datum, 0, len(variable.GetSysVars()))
 	var err error
 	sessionVars := ctx.GetSessionVars()
 	for _, v := range variable.GetSysVars() {
@@ -2199,7 +2199,8 @@ func (e *TiFlashSystemTableRetriever) initialize(sctx sessionctx.Context, tiflas
 }
 
 func (e *TiFlashSystemTableRetriever) dataForTiFlashSystemTables(ctx sessionctx.Context, tidbDatabases string, tidbTables string) ([][]types.Datum, error) {
-	var columnNames []string
+	columnNames := make([]string, 0, len(e.outputCols))
+
 	for _, c := range e.outputCols {
 		if c.Name.O == "TIFLASH_INSTANCE" {
 			continue
@@ -2240,7 +2241,7 @@ func (e *TiFlashSystemTableRetriever) dataForTiFlashSystemTables(ctx sessionctx.
 		return nil, errors.Trace(err)
 	}
 	records := strings.Split(string(body), "\n")
-	var rows [][]types.Datum
+	rows := make([][]types.Datum, 0, len(records))
 	for _, record := range records {
 		if len(record) == 0 {
 			continue

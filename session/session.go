@@ -2095,11 +2095,7 @@ func getHostByIP(ip string) []string {
 	if ip == "127.0.0.1" {
 		return []string{variable.DefHostname}
 	}
-	addrs, err := net.LookupAddr(ip)
-	if err != nil {
-		// The error is ignorable.
-		// The empty line here makes the golint tool (which complains err is not checked) happy.
-	}
+	addrs, _ := net.LookupAddr(ip)
 	return addrs
 }
 

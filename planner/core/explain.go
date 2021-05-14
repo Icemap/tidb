@@ -539,9 +539,7 @@ func (p *PhysicalIndexJoin) explainInfo(normalized bool, isIndexMergeJoin bool) 
 	if len(p.OuterHashKeys) > 0 && !isIndexMergeJoin {
 		exprs := make([]expression.Expression, 0, len(p.OuterHashKeys))
 		for i := range p.OuterHashKeys {
-			expr, err := expression.NewFunctionBase(MockContext(), ast.EQ, types.NewFieldType(mysql.TypeLonglong), p.OuterHashKeys[i], p.InnerHashKeys[i])
-			if err != nil {
-			}
+			expr, _ := expression.NewFunctionBase(MockContext(), ast.EQ, types.NewFieldType(mysql.TypeLonglong), p.OuterHashKeys[i], p.InnerHashKeys[i])
 			exprs = append(exprs, expr)
 		}
 		fmt.Fprintf(buffer, ", equal cond:%s",

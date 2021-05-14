@@ -113,9 +113,9 @@ func (*testSysVarSuite) TestRegistrationOfNewSysVar(c *C) {
 	c.Assert(err, NotNil)
 
 	// Boolean oN or 1 converts to canonical ON or OFF
-	normalizedVal, err := sysVar.Validate(vars, "oN", ScopeSession)
+	normalizedVal, _ := sysVar.Validate(vars, "oN", ScopeSession)
 	c.Assert(normalizedVal, Equals, "ON")
-	normalizedVal, err = sysVar.Validate(vars, "0", ScopeSession)
+	normalizedVal, _ = sysVar.Validate(vars, "0", ScopeSession)
 	c.Assert(normalizedVal, Equals, "OFF")
 
 	err = sysVar.SetSessionFromHook(vars, "OFF") // default is on

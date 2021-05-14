@@ -83,6 +83,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+const (
+	checkSelectRequestHookString = "CheckSelectRequestHook"
+)
+
 func TestT(t *testing.T) {
 	CustomVerboseFlag = true
 	*CustomParallelSuiteFlag = true
@@ -3467,7 +3471,7 @@ func (s *testSuite) TestTimezonePushDown(c *C) {
 	c.Assert(systemTZ.String(), Not(Equals), "Local")
 	ctx := context.Background()
 	count := 0
-	ctx1 := context.WithValue(ctx, "CheckSelectRequestHook", func(req *kv.Request) {
+	ctx1 := context.WithValue(ctx, checkSelectRequestHookString, func(req *kv.Request) {
 		count += 1
 		dagReq := new(tipb.DAGRequest)
 		err := proto.Unmarshal(req.Data, dagReq)
@@ -3502,7 +3506,7 @@ func (s *testSuite) TestNotFillCacheFlag(c *C) {
 	count := 0
 	ctx := context.Background()
 	for _, test := range tests {
-		ctx1 := context.WithValue(ctx, "CheckSelectRequestHook", func(req *kv.Request) {
+		ctx1 := context.WithValue(ctx, checkSelectRequestHookString, func(req *kv.Request) {
 			count++
 			if req.NotFillCache != test.expect {
 				c.Errorf("sql=%s, expect=%v, get=%v", test.sql, test.expect, req.NotFillCache)
@@ -3931,7 +3935,7 @@ func (s *testSuite) TestCoprocessorStreamingFlag(c *C) {
 
 	ctx := context.Background()
 	for _, test := range tests {
-		ctx1 := context.WithValue(ctx, "CheckSelectRequestHook", func(req *kv.Request) {
+		ctx1 := context.WithValue(ctx, checkSelectRequestHookString, func(req *kv.Request) {
 			if req.Streaming != test.expect {
 				c.Errorf("sql=%s, expect=%v, get=%v", test.sql, test.expect, req.Streaming)
 			}

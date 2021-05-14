@@ -33,7 +33,7 @@ func BenchmarkLargeIndex(b *testing.B) {
 	b.ResetTimer()
 
 	for i := range buf {
-		db.Set(buf[i][:keySize], buf[i][:])
+		_ = db.Set(buf[i][:keySize], buf[i][:])
 	}
 }
 
@@ -47,7 +47,7 @@ func BenchmarkPut(b *testing.B) {
 	b.ResetTimer()
 
 	for i := range buf {
-		p.Set(buf[i][:keySize], buf[i][:])
+		_ = p.Set(buf[i][:keySize], buf[i][:])
 	}
 }
 
@@ -61,7 +61,7 @@ func BenchmarkPutRandom(b *testing.B) {
 	b.ResetTimer()
 
 	for i := range buf {
-		p.Set(buf[i][:keySize], buf[i][:])
+		_ = p.Set(buf[i][:keySize], buf[i][:])
 	}
 }
 
@@ -73,12 +73,12 @@ func BenchmarkGet(b *testing.B) {
 
 	p := newMemDB()
 	for i := range buf {
-		p.Set(buf[i][:keySize], buf[i][:])
+		_ = p.Set(buf[i][:keySize], buf[i][:])
 	}
 
 	b.ResetTimer()
 	for i := range buf {
-		p.Get(buf[i][:keySize])
+		_, _ = p.Get(buf[i][:keySize])
 	}
 }
 
@@ -90,12 +90,12 @@ func BenchmarkGetRandom(b *testing.B) {
 
 	p := newMemDB()
 	for i := range buf {
-		p.Set(buf[i][:keySize], buf[i][:])
+		_ = p.Set(buf[i][:keySize], buf[i][:])
 	}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		p.Get(buf[i][:keySize])
+		_, _ = p.Get(buf[i][:keySize])
 	}
 }
 
@@ -147,17 +147,17 @@ func benchmarkSetGet(b *testing.B, buffer *MemDB, data [][]byte) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		for _, k := range data {
-			buffer.Set(k, k)
+			_ = buffer.Set(k, k)
 		}
 		for _, k := range data {
-			buffer.Get(k)
+			_, _ = buffer.Get(k)
 		}
 	}
 }
 
 func benchIterator(b *testing.B, buffer *MemDB) {
 	for k := 0; k < opCnt; k++ {
-		buffer.Set(encodeInt(k), encodeInt(k))
+		_ = buffer.Set(encodeInt(k), encodeInt(k))
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -166,7 +166,7 @@ func benchIterator(b *testing.B, buffer *MemDB) {
 			b.Error(err)
 		}
 		for iter.Valid() {
-			iter.Next()
+			_ = iter.Next()
 		}
 		iter.Close()
 	}

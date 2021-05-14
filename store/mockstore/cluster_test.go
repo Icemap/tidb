@@ -63,12 +63,12 @@ func (s *testClusterSuite) TestClusterSplit(c *C) {
 		rd := rowcodec.Encoder{Enable: true}
 		rowValue, err1 := tablecodec.EncodeRow(sc, []types.Datum{colValue}, []int64{colID}, nil, nil, &rd)
 		c.Assert(err1, IsNil)
-		txn.Set(rowKey, rowValue)
+		_ = txn.Set(rowKey, rowValue)
 
 		encodedIndexValue, err1 := codec.EncodeKey(sc, nil, []types.Datum{colValue, types.NewIntDatum(handle)}...)
 		c.Assert(err1, IsNil)
 		idxKey := tablecodec.EncodeIndexSeekKey(tblID, idxID, encodedIndexValue)
-		txn.Set(idxKey, []byte{'0'})
+		_ = txn.Set(idxKey, []byte{'0'})
 		handle++
 	}
 	err = txn.Commit(context.Background())

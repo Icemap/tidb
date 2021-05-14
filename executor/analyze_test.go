@@ -331,7 +331,7 @@ func (s *testFastAnalyze) TestAnalyzeFastSample(c *C) {
 	}
 
 	handleCols := core.BuildHandleColsForAnalyze(tk.Se, tblInfo)
-	var colsInfo []*model.ColumnInfo
+	colsInfo := make([]*model.ColumnInfo, 0, len(tblInfo.Columns))
 	var indicesInfo []*model.IndexInfo
 	for _, col := range tblInfo.Columns {
 		if mysql.HasPriKeyFlag(col.Flag) {

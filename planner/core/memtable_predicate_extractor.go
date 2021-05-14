@@ -77,7 +77,7 @@ func (helper extractHelper) extractColInConsExpr(extractCols map[int64]*types.Fi
 	}
 	// All expressions in IN must be a constant
 	// SELECT * FROM t1 WHERE c IN ('1', '2')
-	var results []types.Datum
+	results := make([]types.Datum, 0, len(args) - 1)
 	for _, arg := range args[1:] {
 		constant, ok := arg.(*expression.Constant)
 		if !ok || constant.DeferredExpr != nil || constant.ParamMarker != nil {
@@ -789,7 +789,7 @@ func (e *MetricSummaryTableExtractor) Extract(
 	names []*types.FieldName,
 	predicates []expression.Expression,
 ) (remained []expression.Expression) {
-	remained, quantileSkip, quantiles := e.extractCol(schema, names, predicates, "quantile", false)
+	_, quantileSkip, quantiles := e.extractCol(schema, names, predicates, "quantile", false)
 	remained, metricsNameSkip, metricsNames := e.extractCol(schema, names, predicates, "metrics_name", true)
 	e.SkipRequest = quantileSkip || metricsNameSkip
 	e.Quantiles = e.parseQuantiles(quantiles)

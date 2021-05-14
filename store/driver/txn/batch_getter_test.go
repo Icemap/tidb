@@ -30,19 +30,19 @@ func (s *testBatchGetterSuite) TestBufferBatchGetter(c *C) {
 	kb := []byte("b")
 	kc := []byte("c")
 	kd := []byte("d")
-	snap.Set(ka, ka)
-	snap.Set(kb, kb)
-	snap.Set(kc, kc)
-	snap.Set(kd, kd)
+	_ = snap.Set(ka, ka)
+	_ = snap.Set(kb, kb)
+	_ = snap.Set(kc, kc)
+	_ = snap.Set(kd, kd)
 
 	// middle value is the same as snap
 	middle := newMockStore()
-	middle.Set(ka, []byte("a1"))
-	middle.Set(kc, []byte("c1"))
+	_ = middle.Set(ka, []byte("a1"))
+	_ = middle.Set(kc, []byte("c1"))
 
 	buffer := newMockStore()
-	buffer.Set(ka, []byte("a2"))
-	buffer.Delete(kb)
+	_ = buffer.Set(ka, []byte("a2"))
+	_ = buffer.Delete(kb)
 
 	batchGetter := NewBufferBatchGetter(buffer, middle, snap)
 	result, err := batchGetter.BatchGet(context.Background(), []kv.Key{ka, kb, kc, kd})
@@ -106,6 +106,6 @@ func (s *mockBatchGetterStore) Set(k kv.Key, v []byte) error {
 }
 
 func (s *mockBatchGetterStore) Delete(k kv.Key) error {
-	s.Set(k, []byte{})
+	_ = s.Set(k, []byte{})
 	return nil
 }

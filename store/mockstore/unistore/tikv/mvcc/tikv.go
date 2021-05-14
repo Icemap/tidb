@@ -173,7 +173,7 @@ func ParseLockCFValue(data []byte) (lock Lock, err error) {
 		data, lock.ForUpdateTS, err = codec.DecodeUint(data[1:])
 	}
 	if len(data) > 0 && data[0] == minCommitTsPrefix {
-		data, lock.MinCommitTS, err = codec.DecodeUint(data[1:])
+		_, lock.MinCommitTS, err = codec.DecodeUint(data[1:])
 	}
 	return
 }

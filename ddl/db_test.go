@@ -2346,7 +2346,7 @@ func (s *testDBSuite4) TestChangeColumn(c *C) {
 	s.mustExec(tk, c, "create table t (k char(10), v int, INDEX(k(7)));")
 	s.mustExec(tk, c, "alter table t change column k k tinytext")
 	is = domain.GetDomain(ctx).InfoSchema()
-	tbl, err = is.TableByName(model.NewCIStr("test_db"), model.NewCIStr("t"))
+	_, err = is.TableByName(model.NewCIStr("test_db"), model.NewCIStr("t"))
 	c.Assert(err, IsNil)
 
 	// for failing tests

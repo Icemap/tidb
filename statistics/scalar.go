@@ -215,7 +215,9 @@ func enumRangeValues(low, high types.Datum, lowExclude, highExclude bool) []type
 			return nil
 		}
 		remaining = remaining + 1 - uint64(exclude)
-		if remaining >= maxNumStep || remaining < 0 {
+
+		// no value of type uint64 is less than 0
+		if remaining >= maxNumStep {
 			return nil
 		}
 		values := make([]types.Datum, 0, remaining)
